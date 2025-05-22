@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klubik Płomyczek</title>
+    <style>
+body {
+    font-family: 'Open Sans', Arial, sans-serif; /* Use a common sans-serif font stack */
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #e9eef3; /* Simple background color */
+    color: #333;
+    font-size: 1.1em;
+    font-weight: 400;
+}
+
+header {
+    background-color: #ffffff; /* White background for header */
+    width: 100%; /* Full width */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Subtle shadow */
+    border-bottom: 1px solid #ddd; /* Bottom border */
+    padding: 0; /* Remove padding from header itself */
+}
+
+.top-bar {
+    background-color: transparent; /* No background, part of the header area */
+    color: white;
+    padding: 5px 20px; /* Adjust padding */
+    font-size: 0.9em;
+    display: flex;
+    justify-content: flex-end; /* Align items to the right */
+    align-items: center;
+    max-width: 1200px; /* Match main content width */
+    margin: 0 auto; /* Center the content */
+}
+
+.top-bar span {
+    margin-left: 20px; /* Space between items */
+}
+
+.top-bar a {
+    color: white;
+    text-decoration: none;
+    margin-left: 15px; /* Slightly less space between top bar links */
+}
+
+.top-bar a:hover {
+    text-decoration: underline;
+}
+
+.header-main {
+    display: flex;
+    align-items: center;
+    max-width: 1200px; /* Match main content width */
+    margin: 0 auto; /* Center the content */
+    padding: 15px 20px; /* Adjust padding */
+}
+
+.header-main .logo {
+    flex-shrink: 0;
+    margin-right: 30px; /* Adjust space after logo */
+    /* Optional: Add some padding around the logo if needed */
+}
+
+.header-main .logo img {
+    height: 50px; /* Adjust logo size as needed */
+    width: auto;
+}
+
+.header-main h1 {
+    flex-grow: 1; /* Allow title to take up space */
+    margin: 0;
+    color: #333; /* Matte black color for the title in light mode */
+    font-size: 2.2em;
+    font-weight: 700;
+}
+
+.dark-mode .header-main h1 {
+    color: #eee; /* White color for the title in dark mode */
+}
+
+.search-bar {
+    margin-left: auto; /* Push search bar to the right */
+    position: relative; /* Needed for absolute positioning of icon */
+    display: flex;
+    align-items: center;
+    margin-left: 30px; /* Adjust space between title and search */
+    margin-right: 20px; /* Adjust space after search bar */
+    transition: width 0.4s ease-in-out; /* Add transition for smooth expansion */
+}
+
+.search-bar input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc; /* Add a light border */
+    border-radius: 4px;
+    font-size: 0.9em; /* Slightly smaller font */
+    padding-right: 30px; /* Make space for the icon */
+    min-width: 200px; /* Ensure minimum width */
+    background-color: #fff; /* White background for input */
+    outline: none;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Subtle inner shadow */
+    width: 150px; /* Set initial width */
+    transition: width 0.4s ease-in-out; /* Add transition for smooth expansion */
+}
+
+.search-bar span {
+    position: absolute;
+    right: 8px;
+    color: #007bff; /* Blue color for the icon */
+    font-size: 1.2em; /* Slightly larger icon */
+    pointer-events: none; /* Make the span non-interactive */
+}
+
+.search-bar:hover input[type="text"] {
+    width: 250px; /* Expand width on hover */
+}
+
+.header-icons {
+    display: flex;
+    align-items: center;
+    margin-left: 20px; /* Space before icons */
+}
+
+.header-icons img {
+    height: 22px; /* Slightly smaller icons */
+    margin-left: 15px; /* Space between icons */
+    vertical-align: middle; /* Align icons vertically */
+}
+
+header nav {
+    background-color: transparent; /* Remove background color */
+    border: none; /* Remove borders */
+    box-shadow: none; /* Remove shadow */
+    margin-bottom: 20px; /* Add space below nav */
+}
+
+header nav ul {
+    padding: 0;
+    list-style: none;
+    margin-top: 0; /* Adjust margin */
+    text-align: left; /* Align navigation to the left */
+    max-width: 1200px; /* Match main content width */
+    margin: 0 auto; /* Keep centered for now */
+    padding: 8px 20px; /* Adjust internal padding */
+}
+
+header nav ul li {
+    display: inline-block;
+    margin: 0 20px 0 0; /* Adjust spacing between nav items */
+    position: relative; /* Needed for positioning dropdown icon */
+}
+
+header a {
+    color: #333; /* Darker text color for navigation links */
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 1em;
+    font-weight: 700;
+    transition: color 0.3s ease; /* Płynna animacja koloru przy najechaniu */
+    padding: 15px 5px; /* Increase vertical padding */
+    cursor: pointer;
+    border-bottom: none; /* Remove default border as we'll use a pseudo-element */
+    position: relative; /* Needed for absolute positioning of the animated bar */
+    overflow: hidden; /* Hide the pseudo-element outside the link area */
+}
+
+header a:hover {
+    color: #0056b3; /* Keep darker blue on hover */
+    /* Remove border-bottom-color as we're using a pseudo-element */
+    text-decoration: none; /* Remove underline on hover */
+}
+
+header a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0; /* Position at the bottom of the link */
+    height: 2px; /* Height of the animated bar */
+    width: 0; /* Start with zero width */
+    background-color: #007bff; /* Blue color for the bar */
+    transition: width 0.3s ease-in-out; /* Animation for the width */
+}
+
+header a:hover::after {
+    width: 100%; /* Expand to full width on hover */
+}
+
+header a.active-nav {
+    color: #007bff; /* Blue color for active link */
+    border-bottom: 2px solid #007bff; /* Use border-bottom for active state if desired, or remove */
+    font-weight: 700; /* Make active link bold */
+}
+
+.nav-link-with-dropdown::after {
+    content: '▼'; /* Placeholder for dropdown arrow */
+    font-size: 0.6em;
+    margin-left: 3px; /* Reduce space */
+    vertical-align: super; /* Align the arrow higher */
+    position: static; /* Use static positioning */
+    top: auto; /* Reset top */
+}
+
+/* Ensure the last nav item doesn't have right margin */
+header nav ul li:last-child {
+    margin-right: 0;
+}
+
+.hero-section {
+    position: relative;
+    height: 450px; /* Slightly increase height */
+    background-image: url('placeholder-kindergarten.jpg'); /* Keep placeholder for now */
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 30px; /* Add space below hero section */
+    opacity: 0; /* Start hidden for animation */
+    transition: opacity 0.5s ease-in-out; /* Fade in/out animation */
+}
+
+.hero-section.active {
+    opacity: 1; /* Fully visible when active */
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 123, 255, 0.7); /* Slightly darker blue overlay */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+}
+
+main {
+    padding: 20px;
+    max-width: 1200px; /* Match header/nav width */
+    margin: 20px auto;
+    background-color: transparent; /* Main content background transparent */
+    box-shadow: none; /* Remove main shadow */
+    border-radius: 8px;
+    position: relative;
+}
+
+section {
+    margin-bottom: 30px;
+    padding: 30px; /* Consistent internal padding */
+    border-radius: 8px; /* Match main radius */
+    background-color: rgba(0, 123, 255, 0.8); /* Semi-transparent blue background */
+    color: white; /* White text color */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Stronger shadow */
+    opacity: 0; /* Start hidden for animation */
+    transition: opacity 0.5s ease-in-out; /* Fade in/out animation */
+    backdrop-filter: blur(5px); /* Apply glass-like blur effect */
+    -webkit-backdrop-filter: blur(5px); /* Safari support */
+}
+
+section.active {
+    opacity: 1; /* Fully visible when active */
+}
+
+section:last-child {
+    margin-bottom: 0;
+}
+
+section h2 {
+    color: white; /* White color for section titles */
+    margin-top: 0;
+    padding-bottom: 10px; /* Adjust padding */
+    border-bottom: 2px solid rgba(255,255,255,0.3); /* Lighter white border */
+    margin-bottom: 20px; /* Adjust margin */
+    font-size: 2em;
+    font-weight: 700;
+}
+
+section p, section ul, section ol {
+    margin-bottom: 20px; /* Space below paragraphs and lists */
+    color: rgba(255,255,255,0.9); /* Slightly transparent white for text */
+    font-weight: 400;
+}
+
+section ul, section ol {
+    padding-left: 25px; /* Adjust list padding */
+}
+
+footer {
+    text-align: center; /* Center footer text */
+    padding: 30px 20px; /* Increase padding */
+    margin-top: 40px;
+    color: #555;
+    background-color: #f8f8f8; /* Light grey background */
+    border-top: 1px solid #eee;
+    font-size: 1em;
+    font-weight: 400;
+}
+
+@media (max-width: 900px) {
+    .header-main {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 10px;
+    }
+    .header-main h1 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+    .search-bar {
+        margin: 10px 0 0 0;
+        width: 100%;
+    }
+    .search-bar input[type="text"] {
+        min-width: 0;
+        width: 100%;
+    }
+    .header-icons {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    header nav ul {
+        padding: 8px 10px;
+    }
+    main {
+        padding: 10px;
+    }
+    section {
+        padding: 15px;
+    }
+}
+@media (max-width: 600px) {
+    .header-main {
+        flex-direction: row;
+        align-items: center;
+        padding: 8px 5px;
+    }
+    .header-main h1 {
+        font-size: 1.1em;
+        margin: 0 0 0 5px;
+    }
+    .search-bar {
+        margin: 0 0 0 auto;
+        width: 100px;
+    }
+    .search-bar input[type="text"] {
+        font-size: 0.9em;
+        padding: 6px;
+        width: 80px;
+    }
+    .header-icons {
+        display: none;
+    }
+    .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        font-size: 0.85em;
+        padding: 5px 5px;
+    }
+    .top-bar span, .top-bar a, .modern-toggle-button {
+        margin-left: 0;
+        margin-top: 5px;
+    }
+    .hero-section {
+        height: 220px;
+    }
+    section h2 {
+        font-size: 1.2em;
+    }
+    section {
+        padding: 8px;
+    }
+    footer {
+        font-size: 0.9em;
+        padding: 15px 5px;
+    }
+    header nav ul {
+        flex-direction: column;
+        display: none;
+        background: #fff;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100vw;
+        z-index: 1000;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    header nav ul.show {
+        display: block;
+    }
+    header nav ul li {
+        display: block;
+        margin: 0;
+        border-bottom: 1px solid #eee;
+    }
+    header nav ul li:last-child {
+        border-bottom: none;
+    }
+    .hamburger {
+        display: block;
+        background: none;
+        border: none;
+        font-size: 2em;
+        margin-left: auto;
+        margin-right: 10px;
+        cursor: pointer;
+        color: #007bff;
+        z-index: 1100;
+    }
+    body.dark-mode header nav ul {
+        background: #2d2d2d;
+    }
+    body.dark-mode .hamburger {
+        color: #0099ff;
+    }
+}
+/* Hamburger hidden by default */
+.hamburger {
+    display: none;
+}
+
+    </style>
+    <style>
+        /* Styles for the background animation canvas */
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Place behind other content */
+            pointer-events: none; /* Allow clicks to pass through */
+        }
+    </style>
+    <style>
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #1e1e1e; /* Dark background */
+            color: #eee; /* Light text */
+        }
+
+        body.dark-mode header {
+            background-color: #2d2d2d; /* Darker header */
+            border-bottom-color: #444;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        body.dark-mode .top-bar a {
+            color: #ccc; /* Lighter links */
+        }
+
+        body.dark-mode header nav ul li a {
+             color: #ccc; /* Lighter nav links */
+        }
+
+        body.dark-mode header nav ul li a:hover {
+             color: #0099ff; /* Brighter blue on hover */
+        }
+        
+        body.dark-mode header nav ul li a.active-nav {
+             color: #0099ff; /* Brighter blue for active */
+             border-bottom-color: #0099ff;
+        }
+
+        body.dark-mode .search-bar input[type="text"] {
+            background-color: #3c3c3c; /* Dark input background */
+            border-color: #555;
+            color: #eee;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        body.dark-mode .search-bar span {
+             color: #0099ff; /* Brighter blue icon */
+        }
+
+        body.dark-mode main section {
+            background-color: rgba(0, 86, 179, 0.7); /* Darker semi-transparent blue */
+            color: #eee; /* Lighter text */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px); /* Keep blur */
+            -webkit-backdrop-filter: blur(5px); /* Keep blur */
+        }
+
+        body.dark-mode main section h2 {
+            color: #eee; /* Lighter section titles */
+            border-bottom-color: rgba(255,255,255,0.2);
+        }
+
+        body.dark-mode main section p, body.dark-mode main section ul, body.dark-mode main section ol {
+            color: rgba(238,238,238,0.8); /* Slightly transparent light text */
+        }
+
+        body.dark-mode footer {
+            background-color: #2d2d2d; /* Darker footer */
+            color: #ccc; /* Lighter footer text */
+            border-top-color: #444;
+        }
+
+        /* Style for the new toggle button */
+        .modern-toggle-button {
+            padding: 8px 15px;
+            border: 1px solid #007bff; /* Blue border */
+            border-radius: 4px; /* Rounded corners */
+            background-color: #fff; /* White background */
+            color: #007bff; /* Blue text */
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Smooth transitions */
+            margin-left: 15px; /* Space from previous item */
+            outline: none; /* Remove default outline */
+        }
+
+        .modern-toggle-button:hover {
+            background-color: #007bff; /* Blue background on hover */
+            color: #fff; /* White text on hover */
+            border-color: #007bff; /* Blue border on hover */
+        }
+        
+        /* Dark Mode style for the new toggle button */
+        body.dark-mode .modern-toggle-button {
+            background-color: #3c3c3c; /* Dark background in dark mode */
+            color: #0099ff; /* Brighter blue text in dark mode */
+            border-color: #0099ff; /* Brighter blue border in dark mode */
+        }
+
+        body.dark-mode .modern-toggle-button:hover {
+            background-color: #0099ff; /* Brighter blue background on hover in dark mode */
+            color: #fff; /* White text on hover in dark mode */
+            border-color: #0099ff; /* Brighter blue border on hover in dark mode */
+        }
+    </style>
+</head>
+<body>
+    <canvas id="background-canvas"></canvas>
+    <div class="top-bar">
+        <span>Telefon: 123 456 789</span>
+        <span>Email: zlobek@gmina.pl</span>
+        <!-- Social media or other icons can go here if needed -->
+        <a href="#">f</a>
+        <button id="darkModeToggle" class="modern-toggle-button">Tryb Ciemny</button>
+    </div>
+    <header>
+        <div class="header-main">
+            <h1>Klubik Płomyczek</h1>
+            <div class="search-bar">
+                <input type="text" placeholder="Szukaj">
+                <span>&#x1F50E;</span>
+            </div>
+            <button class="hamburger" id="hamburger-menu" aria-label="Menu">&#9776;</button>
+            <div class="header-icons">
+                <!-- Add any relevant kindergarten icons here if needed -->
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#o-nas" data-section="o-nas">O nas</a></li>
+                <li><a href="#oferta" data-section="oferta">Oferta</a></li>
+                <li><a href="#kadra" data-section="kadra">Kadra</a></li>
+                <li><a href="#aktualnosci" data-section="aktualnosci">Aktualności</a></li>
+                <li><a href="#jadlospis" data-section="jadlospis">Jadłospis</a></li>
+                <li><a href="#rekrutacja" data-section="rekrutacja">Rekrutacja</a></li>
+                <li><a href="#dokumenty" data-section="dokumenty">Dokumenty</a></li>
+                <li><a href="#galeria" data-section="galeria">Galeria</a></li>
+                <li><a href="#rodo" data-section="rodo">RODO</a></li>
+                <li><a href="#kontakt" data-section="kontakt">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="hero-section" style="position: relative; height: 450px; background-image: url('placeholder-kindergarten.jpg'); background-size: cover; background-position: center; margin-bottom: 30px;">
+        <div class="hero-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 123, 255, 0.7); display: flex; flex-direction: column; justify-content: center; padding: 20px;">
+            <div style="max-width: 1000px; margin: 0 auto; color: white; text-align: center;">
+                <h2 style="font-size: 3em; margin-bottom: 15px;">Witaj w Klubiku Płomyczek!</h2>
+                <p style="font-size: 1.2em;">Zapewniamy bezpieczną i radosną przestrzeń dla rozwoju Twojego dziecka.</p>
+            </div>
+        </div>
+    </section>
+    <main>
+        <section id="o-nas">
+            <h2>O nas</h2>
+            <p>Witamy w żłobku gminnym Klubik Płomyczek! Zapewniamy profesjonalną opiekę i wsparcie w rozwoju najmłodszych mieszkańców naszej gminy.</p>
+        </section>
+        <section id="oferta">
+            <h2>Oferta</h2>
+            <ul>
+                <li>Opieka nad dziećmi w wieku 1-3 lata w godzinach 7:00-17:00</li>
+                <li>Realizacja podstawy programowej wychowania przedszkolnego</li>
+                <li>Zajęcia dodatkowe: rytmika, język angielski, zajęcia plastyczne i ruchowe</li>
+                <li>Wykwalifikowana i doświadczona kadra pedagogiczna</li>
+                <li>Zdrowe i zbilansowane posiłki przygotowywane na miejscu</li>
+                <li>Indywidualne podejście do każdego dziecka</li>
+            </ul>
+        </section>
+        <section id="kadra">
+            <h2>Kadra</h2>
+            <p>Nasz zespół to wykwalifikowani i pełni pasji pedagodzy, którzy każdego dnia dbają o bezpieczeństwo i rozwój Państwa dzieci.</p>
+            <!-- Tutaj można dodać zdjęcia i opisy pracowników -->
+        </section>
+
+        <section id="aktualnosci">
+            <h2>Aktualności</h2>
+            <p>Bieżące informacje o wydarzeniach, uroczystościach i ogłoszenia dla rodziców.</p>
+            <!-- Tutaj można dodać listę aktualności -->
+        </section>
+
+        <section id="jadlospis">
+            <h2>Jadłospis</h2>
+            <p>Zapraszamy do zapoznania się z naszym tygodniowym jadłospisem, opracowanym z myślą o zdrowym żywieniu dzieci.</p>
+            <!-- Tutaj można dodać jadłospis w formie tabeli lub listy -->
+        </section>
+
+        <section id="rekrutacja">
+            <h2>Rekrutacja</h2>
+            <p>Informacje o zasadach, terminach i niezbędnych dokumentach związanych z procesem rekrutacji do naszego żłobka.</p>
+            <!-- Tutaj można dodać szczegóły procesu rekrutacji -->
+        </section>
+
+        <section id="dokumenty">
+            <h2>Dokumenty</h2>
+            <p>Ważne dokumenty do pobrania: statut żłobka, regulaminy, formularze zgłoszeniowe itp.</p>
+            <!-- Tutaj można dodać listę linków do dokumentów -->
+        </section>
+
+        <section id="galeria">
+            <h2>Galeria</h2>
+            <p>Zapraszamy do obejrzenia zdjęć z życia żłobka, zajęć i wydarzeń.</p>
+            <!-- Tutaj można dodać galerię zdjęć -->
+        </section>
+
+        <section id="rodo">
+            <h2>RODO</h2>
+            <p>Informacje dotyczące przetwarzania i ochrony danych osobowych w Klubiku Płomyczek.</p>
+            <!-- Tutaj można dodać klauzulę informacyjną RODO -->
+        </section>
+
+        <section id="kontakt">
+            <h2>Kontakt</h2>
+            <p>Zapraszamy do kontaktu w przypadku pytań. Jesteśmy do Państwa dyspozycji.</p>
+            <p>Adres: ul. Przykładowa 1, 00-000 Gmina</p>
+            <p>Telefon: 123 456 789</p>
+            <p>Email: zlobek@gmina.pl</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Klubik Płomyczek. Wszelkie prawa zastrzeżone.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('header nav ul li a');
+            const mainSections = document.querySelectorAll('main section');
+            const heroSection = document.querySelector('.hero-section');
+
+            // Function to set active link
+            function setActiveLink(clickedLink) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active-nav');
+                });
+                clickedLink.classList.add('active-nav');
+            }
+
+            // Determine which section to show initially (check URL hash first)
+            const initialSectionId = window.location.hash ? window.location.hash.substring(1) : (mainSections.length > 0 ? mainSections[0].id : null);
+
+            // Handle initial display based on URL hash or default to the first section
+            mainSections.forEach(section => {
+                if (section.id === initialSectionId) {
+                    section.style.display = 'block';
+                    requestAnimationFrame(() => { section.classList.add('active'); });
+                } else {
+                    section.style.display = 'none';
+                    section.classList.remove('active');
+                }
+            });
+
+            // Handle initial hero section display
+            if (heroSection) {
+                if (initialSectionId === 'o-nas') {
+                    heroSection.style.display = 'block';
+                    requestAnimationFrame(() => { heroSection.classList.add('active'); });
+                } else {
+                    heroSection.style.display = 'none';
+                    heroSection.classList.remove('active');
+                }
+            }
+
+            // Set initial active navigation link
+            const initialNavLink = document.querySelector(`header nav ul li a[href="#${initialSectionId}"]`);
+            if (initialNavLink) {
+                setActiveLink(initialNavLink);
+            } else if (mainSections.length > 0) {
+                // If no hash and sections exist, set the first nav link as active
+                const firstNavLink = document.querySelector(`header nav ul li a[href="#${mainSections[0].id}"]`);
+                if (firstNavLink) {
+                    setActiveLink(firstNavLink);
+                }
+            }
+
+            // Add click event listeners to navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sectionId = this.getAttribute('href').substring(1);
+                    
+                    // Immediately hide all sections and remove active class
+                    mainSections.forEach(section => { section.style.display = 'none'; section.classList.remove('active'); });
+                    if (heroSection) { heroSection.style.display = 'none'; heroSection.classList.remove('active'); }
+                    
+                    // Show the target section with animation
+                    const targetSection = document.getElementById(sectionId);
+                    if (targetSection) {
+                        targetSection.style.display = 'block';
+                        requestAnimationFrame(() => { targetSection.classList.add('active'); }); // Use rAF for next repaint
+
+                        // Show hero section if the target is 'o-nas'
+                        if (sectionId === 'o-nas' && heroSection) {
+                            heroSection.style.display = 'block';
+                            requestAnimationFrame(() => { heroSection.classList.add('active'); }); // Use rAF for next repaint
+                        }
+                    }
+
+                    setActiveLink(this);
+                    // Optionally update URL hash without jumping
+                    history.pushState(null, null, `#${sectionId}`);
+                });
+            });
+
+            // Handle back/forward browser navigation
+            window.addEventListener('popstate', function() {
+                const sectionId = window.location.hash ? window.location.hash.substring(1) : (mainSections.length > 0 ? mainSections[0].id : null);
+
+                // Immediately hide all sections and remove active class
+                mainSections.forEach(section => { section.style.display = 'none'; section.classList.remove('active'); });
+                if (heroSection) { heroSection.style.display = 'none'; heroSection.classList.remove('active'); }
+
+                // Show the target section with animation
+                let sectionToShow = document.getElementById(sectionId);
+                if (!sectionToShow && mainSections.length > 0) {
+                    sectionToShow = mainSections[0];
+                }
+
+                if (sectionToShow) {
+                    sectionToShow.style.display = 'block';
+                    requestAnimationFrame(() => { sectionToShow.classList.add('active'); }); // Use rAF for next repaint
+
+                    // Show hero section if the target is 'o-nas'
+                    if (sectionToShow.id === 'o-nas' && heroSection) {
+                        heroSection.style.display = 'block';
+                        requestAnimationFrame(() => { heroSection.classList.add('active'); }); // Use rAF for next repaint
+                    }
+
+                    const initialNavLink = document.querySelector(`header nav ul li a[href="#${sectionToShow.id}"]`);
+                    if (initialNavLink) {
+                        setActiveLink(initialNavLink);
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+        // Background animation script
+        const canvas = document.getElementById('background-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        // Particle properties
+        const particleCount = 200; // Number of particles
+        const maxDistance = 100; // Maximum distance for lines to connect
+        const particleSpeed = 0.5; // Speed of particles
+
+        // Particle class
+        function Particle(x, y) {
+            this.x = x;
+            this.y = y;
+            this.vx = (Math.random() - 0.5) * particleSpeed;
+            this.vy = (Math.random() - 0.5) * particleSpeed;
+            this.radius = 1.5; // Particle size
+        }
+
+        Particle.prototype.update = function() {
+            this.x += this.vx;
+            this.y += this.vy;
+
+            // Bounce off edges
+            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        };
+
+        Particle.prototype.draw = function() {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            ctx.fillStyle = isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)'; // White or Black particles with some transparency
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fill();
+        };
+
+        // Create particles
+        function createParticles() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+            }
+        }
+
+        // Draw lines between nearby particles
+        function connectParticles() {
+            for (let i = 0; i < particleCount; i++) {
+                for (let j = i; j < particleCount; j++) {
+                    const p1 = particles[i];
+                    const p2 = particles[j];
+                    const distance = Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
+
+                    if (distance < maxDistance) {
+                        const isDarkMode = document.body.classList.contains('dark-mode');
+                        const lineColor = isDarkMode ? 'rgba(255, 255, 255,' : 'rgba(0, 0, 0,';
+                        ctx.strokeStyle = `${lineColor}${1 - distance / maxDistance})`; // White or Black lines, more transparent further away
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            connectParticles();
+        }
+
+        // Handle window resize
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            createParticles(); // Recreate particles on resize for better distribution
+        }
+
+        // Initialize
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas(); // Initial resize and particle creation
+        animate();
+    </script>
+    <script>
+        // Dark Mode Toggle Script
+        document.addEventListener('DOMContentLoaded', function() {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const body = document.body;
+
+            // Load dark mode preference from localStorage
+            const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
+            if (isDarkMode) {
+                body.classList.add('dark-mode');
+                darkModeToggle.textContent = 'Tryb Jasny';
+            }
+
+            // Toggle dark mode on button click
+            darkModeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-mode');
+                let darkModeState = 'disabled';
+                if (body.classList.contains('dark-mode')) {
+                    darkModeState = 'enabled';
+                    darkModeToggle.textContent = 'Tryb Jasny';
+                } else {
+                    darkModeToggle.textContent = 'Tryb Ciemny';
+                }
+                // Save dark mode preference to localStorage
+                localStorage.setItem('darkMode', darkModeState);
+            });
+        });
+    </script>
+    <script>
+        // Search bar functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.querySelector('.search-bar input[type="text"]');
+            const mainSections = document.querySelectorAll('main section');
+            const heroSection = document.querySelector('.hero-section');
+            const navLinks = document.querySelectorAll('header nav ul li a');
+
+            let lastActiveSectionId = null;
+            // Remember the last active section for restoring after search
+            navLinks.forEach(link => {
+                if (link.classList.contains('active-nav')) {
+                    lastActiveSectionId = link.getAttribute('href').substring(1);
+                }
+            });
+
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim().toLowerCase();
+                if (query === '') {
+                    // Restore navigation-based section visibility
+                    mainSections.forEach(section => {
+                        if (section.id === lastActiveSectionId) {
+                            section.style.display = 'block';
+                            section.classList.add('active');
+                        } else {
+                            section.style.display = 'none';
+                            section.classList.remove('active');
+                        }
+                    });
+                    if (heroSection) {
+                        if (lastActiveSectionId === 'o-nas') {
+                            heroSection.style.display = 'block';
+                            heroSection.classList.add('active');
+                        } else {
+                            heroSection.style.display = 'none';
+                            heroSection.classList.remove('active');
+                        }
+                    }
+                } else {
+                    // Hide hero section during search
+                    if (heroSection) {
+                        heroSection.style.display = 'none';
+                        heroSection.classList.remove('active');
+                    }
+                    // Show only matching sections
+                    mainSections.forEach(section => {
+                        const text = section.textContent.toLowerCase();
+                        if (text.includes(query)) {
+                            section.style.display = 'block';
+                            section.classList.add('active');
+                        } else {
+                            section.style.display = 'none';
+                            section.classList.remove('active');
+                        }
+                    });
+                }
+            });
+
+            // Update lastActiveSectionId on nav click
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    lastActiveSectionId = this.getAttribute('href').substring(1);
+                });
+            });
+        });
+    </script>
+    <script>
+        // Hamburger menu for mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger-menu');
+            const navUl = document.querySelector('header nav ul');
+            hamburger.addEventListener('click', function() {
+                navUl.classList.toggle('show');
+            });
+            // Hide menu on link click (mobile UX)
+            navUl.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 600) {
+                        navUl.classList.remove('show');
+                    }
+                });
+            });
+            // Hide menu on resize if desktop
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 600) {
+                    navUl.classList.remove('show');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
